@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import '../../models/note.dart';
 
+import '../../models/note.dart';
 import '../../utils/theme.dart';
 import '../../widgets/note_card.dart';
+import '../create_screen/create_note_screen.dart';
 
 class AllNotesTab extends StatelessWidget {
   const AllNotesTab({super.key});
@@ -49,7 +50,9 @@ class AllNotesTab extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: FloatingActionButton.extended(
           backgroundColor: CustomColor.lavender.value,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed(CreateNewNoteScreen.routeName);
+          },
           icon: const Icon(
             CupertinoIcons.add,
             color: Colors.white,

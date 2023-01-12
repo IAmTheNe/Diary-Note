@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/screens/create_screen/create_note_screen.dart';
 
 import './screens/home_screen/home_screen.dart';
 import './screens/intro_screen/intro_screen.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const HomeScreen(),
         IntroductionScreen.routeName: (context) => const IntroductionScreen(),
+        CreateNewNoteScreen.routeName: (context) => const CreateNewNoteScreen(),
       },
     );
   }
