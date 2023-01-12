@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppStyle {
   static final dark = ThemeData(
+    platform: TargetPlatform.iOS,
     brightness: Brightness.dark,
     fontFamily: GoogleFonts.comfortaa().fontFamily,
     tabBarTheme: const TabBarTheme(
