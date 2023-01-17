@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/google_sign_in_provider.dart';
+import '../../widgets/styled_button.dart';
 
 class IntroductionScreen extends StatelessWidget {
   const IntroductionScreen({super.key});
@@ -40,20 +45,25 @@ class IntroductionScreen extends StatelessWidget {
               style: Theme.of(context)
                   .textTheme
                   .titleMedium!
-                  .copyWith(color: Colors.white),
+                  .copyWith(color: Colors.white, height: 1.5),
             ),
           ),
           SizedBox(
             height: height * 0.1,
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pushReplacementNamed('/');
-            },
-            child: const Text(
-              'Login with Google',
-              style: TextStyle(
-                letterSpacing: .6,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            child: Consumer<GoogleSignInProvider>(
+              builder: (context, google, child) => StyledButton(
+                label: child!,
+                icon: const FaIcon(FontAwesomeIcons.google),
+                onPressed: () {
+                  google.signInWithGoogleMethod();
+                },
+              ),
+              child: const Text(
+                'Login with Google',
+                style: TextStyle(letterSpacing: .6),
               ),
             ),
           ),

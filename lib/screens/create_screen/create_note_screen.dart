@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:note_app/utils/date_time_formatter.dart';
+import '../../utils/date_time_formatter.dart';
 
 class CreateNewNoteScreen extends StatelessWidget {
   const CreateNewNoteScreen({super.key});
@@ -37,30 +37,30 @@ class CreateNewNoteScreen extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
+              GestureDetector(
+                onTap: () {},
+                child: const Icon(
                   CupertinoIcons.music_note,
                   color: Colors.red,
                 ),
               ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
+              GestureDetector(
+                onTap: () {},
+                child: const Icon(
                   CupertinoIcons.photo,
                   color: Colors.green,
                 ),
               ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
+              GestureDetector(
+                onTap: () {},
+                child: const Icon(
                   CupertinoIcons.bell,
                   color: Colors.purple,
                 ),
               ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
+              GestureDetector(
+                onTap: () {},
+                child: const Icon(
                   CupertinoIcons.checkmark_circle,
                   color: Colors.yellow,
                 ),

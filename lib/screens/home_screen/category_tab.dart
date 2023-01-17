@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:lottie/lottie.dart';
-import 'package:note_app/widgets/curve_box.dart';
+import '../../widgets/curve_box.dart';
 
 class CategoryTab extends StatelessWidget {
   const CategoryTab({super.key});
