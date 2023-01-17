@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "405862096962",
+    "project_id": "diary-note-app",
+    "storage_bucket": "diary-note-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:405862096962:android:c995dc3b68d4f53395cddb",
+        "android_client_info": {
+          "package_name": "com.android.application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "405862096962-kvo0bis5r1o8r9hvhn8scikpkg81rp98.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZt7KYhfrV6_-8ft6aalJng5OOBn1IP2w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "405862096962-kvo0bis5r1o8r9hvhn8scikpkg81rp98.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
