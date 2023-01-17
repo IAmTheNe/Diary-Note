@@ -50,7 +50,7 @@ class IntroductionScreen extends StatelessWidget {
               Navigator.of(context).pushReplacementNamed('/');
             },
             child: const Text(
-              'GET STARTED',
+              'Login with Google',
               style: TextStyle(
                 letterSpacing: .6,
               ),
