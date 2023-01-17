@@ -7,6 +7,7 @@ class IntroductionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// Getting the height of the screen.
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Column(

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+///A class that contains all the styles used in the app
 class AppStyle {
+  /// Creating a dark theme for the app.
   static final dark = ThemeData(
     platform: TargetPlatform.iOS,
     brightness: Brightness.dark,

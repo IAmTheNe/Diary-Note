@@ -1,11 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:note_app/screens/create_screen/create_note_screen.dart';
 
+import './screens/create_screen/create_note_screen.dart';
 import './screens/home_screen/home_screen.dart';
 import './screens/intro_screen/intro_screen.dart';
 import './utils/theme.dart';
+import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
+  /// A method that is called to ensure that the binding has been initialized.
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
