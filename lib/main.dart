@@ -1,19 +1,21 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:note_app/providers/app_state.dart';
+import 'package:provider/provider.dart';
 
 import './screens/create_screen/create_note_screen.dart';
 import './screens/home_screen/home_screen.dart';
 import './screens/intro_screen/intro_screen.dart';
 import './utils/theme.dart';
-import 'firebase_options.dart';
 
 Future<void> main() async {
   /// A method that is called to ensure that the binding has been initialized.
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(const MyApp());
+
+  /// Creating a ChangeNotifierProvider that is wrapping the MyApp widget.
+  runApp(ChangeNotifierProvider(
+    create: (context) => ApplicationState(),
+    builder: ((context, child) => const MyApp()),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -27,7 +29,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       darkTheme: AppStyle.dark,
       themeMode: ThemeMode.dark,
-      // home: const IntroductionScreen(),
       initialRoute: IntroductionScreen.routeName,
       routes: {
         '/': (context) => const HomeScreen(),
