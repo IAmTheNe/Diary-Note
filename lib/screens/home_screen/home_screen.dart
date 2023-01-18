@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart' hide MenuItem;
 import 'package:flutter/material.dart' hide MenuItem;
-import 'package:note_app/providers/google_sign_in_provider.dart';
+import 'package:note_app/providers/app_state.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/menu_list.dart';
@@ -132,7 +132,7 @@ void onSelected(BuildContext context, MenuItems item) {
             ),
             TextButton(
               onPressed: () async {
-                context.read<GoogleSignInProvider>().signOut();
+                context.read<ApplicationState>().signOut();
                 Navigator.of(context).pop();
               },
               child: Text(

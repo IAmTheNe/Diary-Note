@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import './firebase_options.dart';
-import './providers/google_sign_in_provider.dart';
+import './providers/app_state.dart';
 import './screens/create_screen/create_note_screen.dart';
 import './screens/home_screen/home_screen.dart';
 import './screens/intro_screen/intro_screen.dart';
@@ -12,13 +12,15 @@ import './utils/theme.dart';
 Future<void> main() async {
   /// A method that is called to ensure that the binding has been initialized.
   WidgetsFlutterBinding.ensureInitialized();
+
+  /// It initializes the Firebase app.
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
   /// Creating a ChangeNotifierProvider that is wrapping the MyApp widget.
   runApp(ChangeNotifierProvider(
-    create: (context) => GoogleSignInProvider(),
+    create: (context) => ApplicationState(),
     builder: ((context, child) => const MyApp()),
   ));
 }

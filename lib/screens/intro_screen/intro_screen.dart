@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
-import '../../providers/google_sign_in_provider.dart';
+import '../../providers/app_state.dart';
 import '../../widgets/styled_button.dart';
 
 class IntroductionScreen extends StatelessWidget {
@@ -53,7 +53,7 @@ class IntroductionScreen extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 32),
-            child: Consumer<GoogleSignInProvider>(
+            child: Consumer<ApplicationState>(
               builder: (context, google, child) => StyledButton(
                 label: child!,
                 icon: const FaIcon(FontAwesomeIcons.google),
