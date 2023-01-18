@@ -111,7 +111,6 @@ PopupMenuItem<MenuItems> buildItem(MenuItems item) => PopupMenuItem(
 void onSelected(BuildContext context, MenuItems item) {
   switch (item) {
     case ListMenu.logout:
-      final provider = context.read<GoogleSignInProvider>();
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
