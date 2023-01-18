@@ -7,6 +7,7 @@ import './providers/app_state.dart';
 import './screens/create_screen/create_note_screen.dart';
 import './screens/home_screen/home_screen.dart';
 import './screens/intro_screen/intro_screen.dart';
+import './screens/profile_screen/profile_screen.dart';
 import './utils/theme.dart';
 
 Future<void> main() async {
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const HomeScreen(),
         IntroductionScreen.routeName: (context) => const IntroductionScreen(),
         CreateNewNoteScreen.routeName: (context) => const CreateNewNoteScreen(),
+        ProfileScreen.routeName: (context) => const ProfileScreen(),
       },
     );
   }

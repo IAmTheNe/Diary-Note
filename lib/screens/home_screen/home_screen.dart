@@ -1,13 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart' hide MenuItem;
 import 'package:flutter/material.dart' hide MenuItem;
-import 'package:note_app/providers/app_state.dart';
 import 'package:provider/provider.dart';
+
+import 'package:note_app/providers/app_state.dart';
 
 import '../../data/menu_list.dart';
 import '../../models/menu_item.dart';
 import '../../utils/theme.dart';
 import '../intro_screen/intro_screen.dart';
+import '../profile_screen/profile_screen.dart';
 import './all_note_tab.dart';
 import './category_tab.dart';
 
@@ -143,6 +145,9 @@ void onSelected(BuildContext context, MenuItems item) {
           ],
         ),
       );
+      break;
+    case ListMenu.profile:
+      Navigator.pushNamed(context, ProfileScreen.routeName);
       break;
     default:
   }
