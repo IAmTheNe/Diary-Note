@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart' hide MenuItem;
 import 'package:flutter/material.dart' hide MenuItem;
 import 'package:provider/provider.dart';
 
-import 'package:note_app/providers/app_state.dart';
+import '../../providers/app_state.dart';
 
 import '../../data/menu_list.dart';
 import '../../models/menu_item.dart';

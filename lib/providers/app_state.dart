@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import '../models/user.dart';
 
 class ApplicationState with ChangeNotifier {
   ApplicationState() {
@@ -8,12 +10,15 @@ class ApplicationState with ChangeNotifier {
   }
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
+  final _db = FirebaseFirestore.instance;
 
-  GoogleSignInAccount? _user;
   bool _isLogin = false;
 
+  AppUser? _user;
+
+  AppUser? get user => _user;
+
   /// Returns the user.
-  GoogleSignInAccount? get user => _user;
 
   /// Return a state of your app.
   bool get isLogin => _isLogin;
@@ -28,7 +33,6 @@ class ApplicationState with ChangeNotifier {
   Future<void> signInWithGoogleMethod() async {
     final googleUser = await googleSignIn.signIn();
     if (googleUser == null) return;
-    _user = googleUser;
 
     final googleAuth = await googleUser.authentication;
 
@@ -37,7 +41,25 @@ class ApplicationState with ChangeNotifier {
       idToken: googleAuth.idToken,
     );
 
-    await FirebaseAuth.instance.signInWithCredential(credential);
+    final userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+
+    final userCredentialInfo = userCredential.user;
+
+    _db.collection('user').doc(userCredentialInfo!.uid).set(
+      <String, dynamic>{
+        'displayName': userCredentialInfo.displayName,
+        'email': userCredentialInfo.email,
+        'photoUrl': userCredentialInfo.photoURL,
+      },
+    );
+
+    _user = AppUser(
+      uid: userCredentialInfo.uid,
+      displayName: userCredentialInfo.displayName!,
+      email: userCredentialInfo.email!,
+      photoURL: userCredentialInfo.photoURL,
+    );
     notifyListeners();
   }
 
@@ -45,7 +67,6 @@ class ApplicationState with ChangeNotifier {
   Future<void> signOut() async {
     await googleSignIn.disconnect();
     FirebaseAuth.instance.signOut();
-    _user = null;
     notifyListeners();
   }
 
