@@ -30,4 +30,12 @@ class GoogleSignInProvider with ChangeNotifier {
     await FirebaseAuth.instance.signInWithCredential(credential);
     notifyListeners();
   }
+
+  /// It signs out the user from the app and from Google
+  Future<void> signOut() async {
+    await googleSignIn.disconnect();
+    FirebaseAuth.instance.signOut();
+    _user = null;
+    notifyListeners();
+  }
 }

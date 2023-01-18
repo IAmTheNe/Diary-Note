@@ -1,7 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart' hide MenuItem;
+import 'package:flutter/material.dart' hide MenuItem;
+import 'package:note_app/providers/google_sign_in_provider.dart';
+import 'package:provider/provider.dart';
 
+import '../../data/menu_list.dart';
+import '../../models/menu_item.dart';
 import '../../utils/theme.dart';
 import '../intro_screen/intro_screen.dart';
 import './all_note_tab.dart';
@@ -59,9 +63,16 @@ class TabSection extends StatelessWidget {
               onPressed: () {},
               icon: const Icon(CupertinoIcons.search),
             ),
-            IconButton(
-              onPressed: () {},
+            PopupMenuButton<MenuItems>(
+              onSelected: (value) => onSelected(context, value),
+              itemBuilder: (context) => [
+                ...ListMenu.firstMenu.map(buildItem).toList(),
+                const PopupMenuDivider(),
+                ...ListMenu.secondMenu.map(buildItem).toList(),
+              ],
               icon: const Icon(CupertinoIcons.ellipsis_circle),
+              tooltip: 'More',
+              padding: const EdgeInsets.all(4.0),
             ),
           ],
           bottom: const TabBar(
@@ -83,5 +94,57 @@ class TabSection extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+PopupMenuItem<MenuItems> buildItem(MenuItems item) => PopupMenuItem(
+      value: item,
+      child: Row(
+        children: [
+          Icon(item.icon),
+          const SizedBox(width: 10),
+          Text(item.label),
+        ],
+      ),
+    );
+
+void onSelected(BuildContext context, MenuItems item) {
+  switch (item) {
+    case ListMenu.logout:
+      final provider = context.read<GoogleSignInProvider>();
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Log out'),
+          content: const Text(
+            'You will be returned to the Login screen! Are you sure, do you want to continue?',
+            style: TextStyle(height: 1.2),
+            textAlign: TextAlign.justify,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'No',
+                style: TextStyle(color: CustomColor.lavender.value),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                context.read<GoogleSignInProvider>().signOut();
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Yes',
+                style: TextStyle(color: CustomColor.lavender.value),
+              ),
+            ),
+          ],
+        ),
+      );
+      break;
+    default:
   }
 }
