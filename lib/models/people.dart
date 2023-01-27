@@ -29,6 +29,7 @@ class PeopleSingleton {
         displayName: people.displayName!,
         email: people.email!,
         photoURL: people.photoURL!,
+        creationTime: people.metadata.creationTime,
       );
     }
   }
@@ -47,6 +48,7 @@ class PeopleSingleton {
         'displayName': credential.user!.displayName,
         'email': credential.user!.email,
         'photoUrl': credential.user!.photoURL,
+        'dayOfUse': credential.user!.metadata.creationTime,
       },
     );
   }
@@ -57,12 +59,14 @@ class People {
   final String displayName;
   final String email;
   final String? photoURL;
+  final DateTime? creationTime;
 
   People({
     required this.uid,
     required this.displayName,
     required this.email,
     this.photoURL,
+    this.creationTime,
   });
 
   factory People.anonymous() {

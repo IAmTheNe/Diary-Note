@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/models/people.dart';
+import 'package:note_app/utils/date_time_formatter.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -30,6 +31,13 @@ class ProfileScreen extends StatelessWidget {
               height: 4,
             ),
             Text('Email: ${user.email}'),
+            const SizedBox(
+              height: 4,
+            ),
+            Text("Date Join: ${DateTimeFormatter.customPattern(
+              pattern: 'dd/MM/yyyy',
+              time: user.creationTime,
+            )}"),
           ],
         ),
       ),
