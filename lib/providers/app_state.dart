@@ -53,13 +53,6 @@ class ApplicationState with ChangeNotifier {
         'photoUrl': userCredentialInfo.photoURL,
       },
     );
-
-    _user = AppUser(
-      uid: userCredentialInfo.uid,
-      displayName: userCredentialInfo.displayName!,
-      email: userCredentialInfo.email!,
-      photoURL: userCredentialInfo.photoURL,
-    );
     notifyListeners();
   }
 
@@ -73,11 +66,19 @@ class ApplicationState with ChangeNotifier {
   /// It initializes the Firebase app and listens for changes in the user's authentication state
   Future<void> _init() async {
     /// Listening for changes in the user's authentication state.
-    FirebaseAuth.instance.userChanges().listen((user) {
+    FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user == null) {
         _isLogin = false;
+        _user = null;
       } else {
         _isLogin = true;
+        _user = AppUser(
+          uid: user.uid,
+          displayName: user.displayName!,
+          email: user.email!,
+          photoURL: user.photoURL,
+        );
+        print(user.photoURL);
       }
       notifyListeners();
     });
