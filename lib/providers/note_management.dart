@@ -10,20 +10,18 @@ class NoteManagement with ChangeNotifier {
 
   final _db = FirebaseFirestore.instance;
 
-  /// It returns a Future that will eventually return a List of Note objects
-  ///
-  /// Returns:
-  ///   A Future<List<Note>?>
-  // Future<List<Note>?> fetchAllNotes() async {
-  //   // _notes.add();
-  //   final ref = _db.collection("note").doc("").withConverter(
+  // Future<void> createNote(Note note) async {
+  //   final uid = PeopleSingleton.instance.user!.uid;
+  //   final docRef = _db
+  //       .collection("notes")
+  //       .withConverter(
   //         fromFirestore: Note.fromFirestore,
   //         toFirestore: (Note note, _) => note.toFirestore(),
-  //       );
-  //   final docSnap = await ref.get();
-  //   final note = docSnap.data();
-  //   return null;
+  //       )
+  //       .doc(uid);
+  //   note.id = uid;
+  //   await docRef.set(note);
+  //   _notes.add(note);
+  //   notifyListeners();
   // }
-
-  Future<void> createNote() async {}
 }

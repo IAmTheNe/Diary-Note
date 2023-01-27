@@ -6,13 +6,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Note {
-  final String id;
+  String id;
   final String? title;
   final DateTime createdAt;
   final String content;
   final String? image;
 
-  const Note({
+  Note({
     required this.id,
     this.title,
     required this.createdAt,

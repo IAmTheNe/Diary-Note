@@ -9,30 +9,10 @@ class PeopleSingleton {
 
   static PeopleSingleton? _instance;
 
+  factory PeopleSingleton() => _instance!;
+
   /// Returns the instance if it's not null, otherwise it creates it.
   static PeopleSingleton get instance => _instance ??= PeopleSingleton._();
-
-  People? _user;
-  People? get user => _user;
-
-  /// If the user is logged in, then we create a new People object with the user's information. If the
-  /// user is not logged in, then we create a new People object with anonymous information
-  ///
-  /// Args:
-  ///   people (People): The user object that contains the user's information.
-  Future<void> authUser(User? people) async {
-    if (people == null) {
-      _user = People.anonymous();
-    } else {
-      _user = People(
-        uid: people.uid,
-        displayName: people.displayName!,
-        email: people.email!,
-        photoURL: people.photoURL!,
-        creationTime: people.metadata.creationTime,
-      );
-    }
-  }
 
   /// It takes a UserCredential object as an argument, and then it uses the FirebaseFirestore instance
   /// to create a new document in the users collection, and then it sets the document's fields to the

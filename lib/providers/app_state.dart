@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:note_app/models/people.dart';
+import '../models/people.dart';
 
 class ApplicationState with ChangeNotifier {
   ApplicationState() {
@@ -9,6 +9,13 @@ class ApplicationState with ChangeNotifier {
   }
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
+
+  People? _user;
+
+  People? get user => _user;
+
+  /// Returns the user.
+  /// Return a state of your app.
 
   /// It signs in the user with Google, and if the user is not null, it sets the user to the google
   /// user, and then it gets the authentication of the google user, and then it creates a credential
@@ -28,11 +35,11 @@ class ApplicationState with ChangeNotifier {
       idToken: googleAuth.idToken,
     );
 
-    /// Signing in the user with the credential.
     final userCredential =
         await FirebaseAuth.instance.signInWithCredential(credential);
 
     PeopleSingleton.instance.storeData(userCredential);
+
     notifyListeners();
   }
 
@@ -44,10 +51,20 @@ class ApplicationState with ChangeNotifier {
   }
 
   /// It initializes the Firebase app and listens for changes in the user's authentication state
-  Future<void> _init() async {
+  void _init() {
     /// Listening for changes in the user's authentication state.
     FirebaseAuth.instance.authStateChanges().listen((user) {
-      PeopleSingleton.instance.authUser(user);
+      if (user == null) {
+        _user = null;
+      } else {
+        _user = People(
+          uid: user.uid,
+          displayName: user.displayName!,
+          email: user.email!,
+          photoURL: user.photoURL,
+          creationTime: user.metadata.creationTime,
+        );
+      }
       notifyListeners();
     });
   }
