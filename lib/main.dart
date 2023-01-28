@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:note_app/providers/note_management.dart';
 import 'package:provider/provider.dart';
 
 import './firebase_options.dart';
@@ -20,10 +21,19 @@ Future<void> main() async {
   );
 
   /// Creating a ChangeNotifierProvider that is wrapping the MyApp widget.
-  runApp(ChangeNotifierProvider(
-    create: (context) => ApplicationState(),
-    builder: ((context, child) => const MyApp()),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => ApplicationState(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => NoteManagement(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

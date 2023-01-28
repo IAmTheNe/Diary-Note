@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:note_app/models/note.dart';
-import 'package:note_app/providers/note_management.dart';
+import 'package:note_app/models/people.dart';
+import 'package:note_app/providers/app_state.dart';
 import 'package:provider/provider.dart';
+
+import '../../models/note.dart';
+import '../../providers/note_management.dart';
 import '../../utils/date_time_formatter.dart';
 
 class CreateNewNoteScreen extends StatefulWidget {
@@ -19,7 +22,7 @@ class _CreateNewNoteScreenState extends State<CreateNewNoteScreen> {
   late final TextEditingController _contentController;
   late final DateTime time;
   final _formKey = GlobalKey<FormState>();
-  // final _scaffoldMessage = GlobalKey<ScaffoldMessengerState>();
+  final _scaffoldMessage = GlobalKey<ScaffoldMessengerState>();
 
   @override
   void initState() {
@@ -45,12 +48,20 @@ class _CreateNewNoteScreenState extends State<CreateNewNoteScreen> {
     final content = _contentController.text;
     final title = _titleController.text;
     final note = Note(
-      id: '',
+      userId: PeopleSingleton.instance.people!.uid,
       createdAt: time,
       content: content,
       title: title,
     );
-    // context.read<NoteManagement>().createNote(note);
+    context.read<NoteManagement>().createNote(note);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Create new note successfully!'),
+        duration: Duration(seconds: 3),
+        behavior: SnackBarBehavior.floating,
+        dismissDirection: DismissDirection.horizontal,
+      ),
+    );
     Navigator.pop(context);
   }
 

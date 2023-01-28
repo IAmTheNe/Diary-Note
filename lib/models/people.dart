@@ -32,6 +32,14 @@ class PeopleSingleton {
       },
     );
   }
+
+  People? _people;
+
+  void authUser(People? people) {
+    _people = people;
+  }
+
+  People? get people => _people;
 }
 
 class People {

@@ -56,6 +56,7 @@ class ApplicationState with ChangeNotifier {
     FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user == null) {
         _user = null;
+        PeopleSingleton.instance.authUser(null);
       } else {
         _user = People(
           uid: user.uid,
@@ -64,6 +65,7 @@ class ApplicationState with ChangeNotifier {
           photoURL: user.photoURL,
           creationTime: user.metadata.creationTime,
         );
+        PeopleSingleton.instance.authUser(_user);
       }
       notifyListeners();
     });

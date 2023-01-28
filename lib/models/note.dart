@@ -6,14 +6,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Note {
-  String id;
+  final String? userId;
   final String? title;
   final DateTime createdAt;
   final String content;
   final String? image;
 
   Note({
-    required this.id,
+    required this.userId,
     this.title,
     required this.createdAt,
     required this.content,
@@ -22,7 +22,7 @@ class Note {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
+      'userId': userId,
       'title': title,
       'createdAt': createdAt.millisecondsSinceEpoch,
       'content': content,
@@ -36,7 +36,7 @@ class Note {
   ///   A map of the data that is being stored in the database.
   Map<String, dynamic> toFirestore() {
     return {
-      "id": id,
+      "userId": userId,
       if (title != null) "title": title,
       "createdAt": createdAt,
       "content": content,
@@ -46,7 +46,7 @@ class Note {
 
   factory Note.fromMap(Map<String, dynamic> map) {
     return Note(
-      id: map['id'] as String,
+      userId: map['userId'] != null ? map['userId'] as String : null,
       title: map['title'] != null ? map['title'] as String : null,
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
       content: map['content'] as String,
@@ -60,7 +60,7 @@ class Note {
   ) {
     final data = snapshot.data();
     return Note(
-      id: data?['id'],
+      userId: data?['userId'],
       title: data?['title'] ?? '',
       createdAt: data?['createdAt'],
       content: data?['content'],
