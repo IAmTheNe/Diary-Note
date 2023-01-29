@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:note_app/providers/note_management.dart';
 import 'package:provider/provider.dart';
 
 import './firebase_options.dart';
 import './providers/app_state.dart';
+import './providers/note_management.dart';
 import './screens/create_screen/create_note_screen.dart';
 import './screens/home_screen/home_screen.dart';
 import './screens/intro_screen/intro_screen.dart';

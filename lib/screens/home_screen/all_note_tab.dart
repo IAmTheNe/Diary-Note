@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:note_app/utils/date_time_formatter.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/note.dart';
+import '../../providers/note_management.dart';
 import '../../utils/theme.dart';
 import '../../widgets/note_card.dart';
 import '../create_screen/create_note_screen.dart';
@@ -14,36 +17,42 @@ class AllNotesTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: AnimationLimiter(
-        child: ListView.builder(
-          itemBuilder: (context, index) =>
-              const AnimationConfiguration.staggeredGrid(
-            position: 1,
-            columnCount: 1,
-            duration: Duration(milliseconds: 500),
-            child: ScaleAnimation(
-              child: FadeInAnimation(
-                curve: Curves.easeInCubic,
-                child: NoteCard(
-                  title: Text(
-                    'Lorem ipsum.',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+        child: Consumer<NoteManagement>(
+          builder: (context, note, child) => FutureBuilder(
+            future: note.fetchAllNotes(),
+            builder: (context, snapshot) => ListView.builder(
+              itemBuilder: (context, index) =>
+                  AnimationConfiguration.staggeredGrid(
+                position: 1,
+                columnCount: 1,
+                duration: const Duration(milliseconds: 500),
+                child: ScaleAnimation(
+                  child: FadeInAnimation(
+                    curve: Curves.easeInCubic,
+                    child: NoteCard(
+                      title: Text(
+                        note.notes[index].title!,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      type: NoteCategory.reminder,
+                      createdAt: Text(DateTimeFormatter.shortDateTime(
+                          note.notes[index].createdAt)),
+                      content: Text(
+                        note.notes[index].content,
+                        style: const TextStyle(height: 1.5),
+                        textAlign: TextAlign.justify,
+                        maxLines: 5,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      image: 'assets/images/pic1.jpg',
+                    ),
                   ),
-                  type: NoteCategory.reminder,
-                  createdAt: Text('6 Aug 2020, 07:49 AM'),
-                  content: Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras commodo tellus et neque euismod, et tristique dolor sagittis. Vestibulum ligula augue, bibendum vel arcu quis, commodo congue velit.',
-                    style: TextStyle(height: 1.5),
-                    textAlign: TextAlign.justify,
-                    maxLines: 5,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  image: 'assets/images/pic1.jpg',
                 ),
               ),
+              itemCount: note.notes.length,
             ),
           ),
-          itemCount: 20,
         ),
       ),
       floatingActionButton: Padding(

@@ -62,7 +62,7 @@ class Note {
     return Note(
       userId: data?['userId'],
       title: data?['title'] ?? '',
-      createdAt: data?['createdAt'],
+      createdAt: (data?['createdAt'] as Timestamp).toDate(),
       content: data?['content'],
       image: data?['image'],
     );

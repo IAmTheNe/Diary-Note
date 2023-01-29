@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:note_app/models/people.dart';
-import 'package:note_app/providers/app_state.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/note.dart';
@@ -22,7 +21,6 @@ class _CreateNewNoteScreenState extends State<CreateNewNoteScreen> {
   late final TextEditingController _contentController;
   late final DateTime time;
   final _formKey = GlobalKey<FormState>();
-  final _scaffoldMessage = GlobalKey<ScaffoldMessengerState>();
 
   @override
   void initState() {
