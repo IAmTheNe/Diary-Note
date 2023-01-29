@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:note_app/providers/app_state.dart';
 import 'package:note_app/utils/date_time_formatter.dart';
 import 'package:provider/provider.dart';
 
@@ -17,9 +18,9 @@ class AllNotesTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: AnimationLimiter(
-        child: Consumer<NoteManagement>(
-          builder: (context, note, child) => FutureBuilder(
-            future: note.fetchAllNotes(),
+        child: Consumer2<NoteManagement, ApplicationState>(
+          builder: (context, note, app, child) => FutureBuilder(
+            future: note.fetchAllNotes(app.user!.uid),
             builder: (context, snapshot) => ListView.builder(
               itemBuilder: (context, index) =>
                   AnimationConfiguration.staggeredGrid(

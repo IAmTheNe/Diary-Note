@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:note_app/models/people.dart';
 import '../models/note.dart';
 
 class NoteManagement with ChangeNotifier {
@@ -21,8 +20,7 @@ class NoteManagement with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchAllNotes() async {
-    final uid = PeopleSingleton.instance.people!.uid;
+  Future<void> fetchAllNotes(String uid) async {
     final docRef = _db
         .collection("notes")
         .withConverter(
