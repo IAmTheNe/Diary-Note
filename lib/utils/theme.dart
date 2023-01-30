@@ -27,6 +27,7 @@ class AppStyle {
         ),
       ),
     ),
+    useMaterial3: true,
   );
 }
 

@@ -56,14 +56,20 @@ class IntroductionScreen extends StatelessWidget {
             child: Consumer<ApplicationState>(
               builder: (context, google, child) => StyledButton(
                 label: child!,
-                icon: const FaIcon(FontAwesomeIcons.google),
+                icon: const FaIcon(
+                  FontAwesomeIcons.google,
+                  color: Colors.white,
+                ),
                 onPressed: () {
                   google.signInWithGoogleMethod();
                 },
               ),
               child: const Text(
                 'Login with Google',
-                style: TextStyle(letterSpacing: .6),
+                style: TextStyle(
+                  letterSpacing: .6,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
