@@ -22,6 +22,7 @@ class _CreateNewNoteScreenState extends State<CreateNewNoteScreen> {
   late final DateTime time;
   final _formKey = GlobalKey<FormState>();
   Note? note;
+  bool init = false;
 
   @override
   void initState() {
@@ -29,16 +30,17 @@ class _CreateNewNoteScreenState extends State<CreateNewNoteScreen> {
     _contentController = TextEditingController();
 
     time = DateTime.now();
-
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
     note = ModalRoute.of(context)!.settings.arguments as Note?;
-    _titleController.text = note != null ? note!.title! : '';
-    _contentController.text = note != null ? note!.content : '';
-
+    if (!init) {
+      _titleController.text = note != null ? note!.title! : '';
+      _contentController.text = note != null ? note!.content : '';
+    }
+    init = true;
     super.didChangeDependencies();
   }
 
@@ -91,6 +93,7 @@ class _CreateNewNoteScreenState extends State<CreateNewNoteScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
