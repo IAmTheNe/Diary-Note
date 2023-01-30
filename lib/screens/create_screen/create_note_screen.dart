@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:note_app/models/people.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/note.dart';
 import '../../providers/note_management.dart';
 import '../../utils/date_time_formatter.dart';
 
@@ -45,13 +44,13 @@ class _CreateNewNoteScreenState extends State<CreateNewNoteScreen> {
     _formKey.currentState!.save();
     final content = _contentController.text;
     final title = _titleController.text;
-    final note = Note(
-      userId: PeopleSingleton.instance.people!.uid,
-      createdAt: time,
-      content: content,
-      title: title,
-    );
-    context.read<NoteManagement>().createNote(note);
+    final Map<String, dynamic> map = {
+      'userId': PeopleSingleton.instance.people!.uid,
+      'createdAt': time,
+      'content': content,
+      'title': title,
+    };
+    context.read<NoteManagement>().createNote(map);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Create new note successfully!'),

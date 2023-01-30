@@ -10,16 +10,27 @@ class NoteManagement with ChangeNotifier {
 
   final _db = FirebaseFirestore.instance;
 
-  Future<void> createNote(Note note) async {
+  /// It adds the note to the list of notes
+  ///
+  /// Args:
+  ///   note (Note): The note that we want to add to the database.
+  Future<void> createNote(Map<String, dynamic> map) async {
     final docRef = _db.collection("notes").doc().withConverter(
           fromFirestore: Note.fromFirestore,
           toFirestore: (Note note, _) => note.toFirestore(),
         );
+    map['noteId'] = docRef.id;
+    final note = Note.fromMap(map);
     await docRef.set(note);
     _notes.add(note);
     notifyListeners();
   }
 
+  /// It fetches all the notes from the database, converts them to a list of Note objects, sorts them by
+  /// date
+  ///
+  /// Args:
+  ///   uid (String): The user id of the user who is logged in.
   Future<void> fetchAllNotes(String uid) async {
     final docRef = _db
         .collection("notes")
@@ -38,5 +49,18 @@ class NoteManagement with ChangeNotifier {
     _notes = loadData;
     notifyListeners();
     // print(docSnap.docs);
+  }
+
+  /// It deletes a note from the database and from the local list of notes
+  ///
+  /// Args:
+  ///   note (Note): The note object that we want to delete.
+  Future<void> deleteNote(Note note) async {
+    final docRef = _db.collection("notes").doc(note.noteId);
+    final existNote = _notes.indexWhere((n) => n.noteId == note.noteId);
+    _notes.removeAt(existNote);
+    notifyListeners();
+
+    await docRef.delete();
   }
 }

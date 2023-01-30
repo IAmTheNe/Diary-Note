@@ -18,6 +18,9 @@ class ListMenu {
     icon: CupertinoIcons.profile_circled,
   );
 
+  static const delete = MenuItems(label: 'Delete');
+  static const password = MenuItems(label: 'Lock');
+
   static const firstMenu = [
     setting,
     profile,
@@ -25,5 +28,10 @@ class ListMenu {
 
   static const secondMenu = [
     logout,
+  ];
+
+  static const noteAction = [
+    delete,
+    password,
   ];
 }

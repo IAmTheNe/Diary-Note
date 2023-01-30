@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Note {
+  final String noteId;
   final String? userId;
   final String? title;
   final DateTime createdAt;
@@ -13,6 +14,7 @@ class Note {
   final String? image;
 
   Note({
+    required this.noteId,
     required this.userId,
     this.title,
     required this.createdAt,
@@ -36,6 +38,7 @@ class Note {
   ///   A map of the data that is being stored in the database.
   Map<String, dynamic> toFirestore() {
     return {
+      "noteId": noteId,
       "userId": userId,
       if (title != null) "title": title,
       "createdAt": createdAt,
@@ -46,9 +49,10 @@ class Note {
 
   factory Note.fromMap(Map<String, dynamic> map) {
     return Note(
+      noteId: map['noteId'] as String,
       userId: map['userId'] != null ? map['userId'] as String : null,
       title: map['title'] != null ? map['title'] as String : null,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
+      createdAt: map['createdAt'],
       content: map['content'] as String,
       image: map['image'] != null ? map['image'] as String : null,
     );
@@ -60,10 +64,11 @@ class Note {
   ) {
     final data = snapshot.data();
     return Note(
+      noteId: data?['noteId'] ?? '',
       userId: data?['userId'],
       title: data?['title'] ?? '',
       createdAt: (data?['createdAt'] as Timestamp).toDate(),
-      content: data?['content'],
+      content: data?['content'] ?? '',
       image: data?['image'],
     );
   }

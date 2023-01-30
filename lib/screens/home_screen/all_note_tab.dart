@@ -1,18 +1,38 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:note_app/providers/app_state.dart';
-import 'package:note_app/utils/date_time_formatter.dart';
 import 'package:provider/provider.dart';
 
+import '../../data/menu_list.dart';
+import '../../models/menu_item.dart';
 import '../../models/note.dart';
+import '../../providers/app_state.dart';
 import '../../providers/note_management.dart';
+import '../../utils/date_time_formatter.dart';
 import '../../utils/theme.dart';
 import '../../widgets/note_card.dart';
 import '../create_screen/create_note_screen.dart';
 
 class AllNotesTab extends StatelessWidget {
   const AllNotesTab({super.key});
+
+  void showContextMenu(BuildContext context, Note note) async {
+    await showModalBottomSheet(
+      context: context,
+      builder: (context) => SizedBox(
+        height: 150,
+        child: Card(
+          child: ListView(
+            children: [
+              ...ListMenu.noteAction
+                  .map((items) => buildItem(context, items, note))
+                  .toList(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,23 +50,30 @@ class AllNotesTab extends StatelessWidget {
                 child: ScaleAnimation(
                   child: FadeInAnimation(
                     curve: Curves.easeInCubic,
-                    child: NoteCard(
-                      title: Text(
-                        note.notes[index].title!,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                    child: GestureDetector(
+                      onLongPress: () =>
+                          showContextMenu(context, note.notes[index]),
+                      child: NoteCard(
+                        title: Text(
+                          note.notes[index].title!,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        type: NoteCategory.reminder,
+                        createdAt: Text(
+                          DateTimeFormatter.shortDateTime(
+                            note.notes[index].createdAt,
+                          ),
+                        ),
+                        content: Text(
+                          note.notes[index].content,
+                          style: const TextStyle(height: 1.5),
+                          textAlign: TextAlign.justify,
+                          maxLines: 5,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        image: null,
                       ),
-                      type: NoteCategory.reminder,
-                      createdAt: Text(DateTimeFormatter.shortDateTime(
-                          note.notes[index].createdAt)),
-                      content: Text(
-                        note.notes[index].content,
-                        style: const TextStyle(height: 1.5),
-                        textAlign: TextAlign.justify,
-                        maxLines: 5,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      image: 'assets/images/pic1.jpg',
                     ),
                   ),
                 ),
@@ -78,5 +105,32 @@ class AllNotesTab extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget buildItem(BuildContext context, MenuItems items, Note note) {
+    return ListTile(
+      onTap: () => onTap(context, items, note),
+      title: Text(items.label),
+    );
+  }
+
+  void onTap(BuildContext context, MenuItems items, Note note) {
+    switch (items) {
+      case ListMenu.delete:
+        context.read<NoteManagement>().deleteNote(note);
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            const SnackBar(
+              content: Text('Delete this note successfully!'),
+              duration: Duration(seconds: 3),
+              behavior: SnackBarBehavior.floating,
+              dismissDirection: DismissDirection.horizontal,
+            ),
+          );
+        Navigator.pop(context);
+        break;
+      default:
+    }
   }
 }
