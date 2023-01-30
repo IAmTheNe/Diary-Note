@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:note_app/widgets/empty.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/menu_list.dart';
@@ -41,45 +42,60 @@ class AllNotesTab extends StatelessWidget {
         child: Consumer2<NoteManagement, ApplicationState>(
           builder: (context, note, app, child) => FutureBuilder(
             future: note.fetchAllNotes(app.user!.uid),
-            builder: (context, snapshot) => ListView.builder(
-              itemBuilder: (context, index) =>
-                  AnimationConfiguration.staggeredGrid(
-                position: 1,
-                columnCount: 1,
-                duration: const Duration(milliseconds: 500),
-                child: ScaleAnimation(
-                  child: FadeInAnimation(
-                    curve: Curves.easeInCubic,
-                    child: GestureDetector(
-                      onLongPress: () =>
-                          showContextMenu(context, note.notes[index]),
-                      child: NoteCard(
-                        title: Text(
-                          note.notes[index].title!,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        type: NoteCategory.reminder,
-                        createdAt: Text(
-                          DateTimeFormatter.shortDateTime(
-                            note.notes[index].createdAt,
+            builder: (context, snapshot) {
+              if (note.notes.isEmpty) {
+                return const EmptyContent(
+                  lottiePath: 'assets/animations/empty_note.json',
+                  isReplay: true,
+                  child: Text(
+                    'There is no note! Press \'Create\' to write your new Note!',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                );
+              }
+              return ListView.builder(
+                itemBuilder: (context, index) =>
+                    AnimationConfiguration.staggeredGrid(
+                  position: 1,
+                  columnCount: 1,
+                  duration: const Duration(milliseconds: 500),
+                  child: ScaleAnimation(
+                    child: FadeInAnimation(
+                      curve: Curves.easeInCubic,
+                      child: GestureDetector(
+                        onLongPress: () =>
+                            showContextMenu(context, note.notes[index]),
+                        child: NoteCard(
+                          title: Text(
+                            note.notes[index].title!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
+                          type: NoteCategory.reminder,
+                          createdAt: Text(
+                            DateTimeFormatter.shortDateTime(
+                              note.notes[index].createdAt,
+                            ),
+                          ),
+                          content: Text(
+                            note.notes[index].content,
+                            style: const TextStyle(height: 1.5),
+                            textAlign: TextAlign.justify,
+                            maxLines: 5,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          image: null,
                         ),
-                        content: Text(
-                          note.notes[index].content,
-                          style: const TextStyle(height: 1.5),
-                          textAlign: TextAlign.justify,
-                          maxLines: 5,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        image: null,
                       ),
                     ),
                   ),
                 ),
-              ),
-              itemCount: note.notes.length,
-            ),
+                itemCount: note.notes.length,
+              );
+            },
           ),
         ),
       ),
