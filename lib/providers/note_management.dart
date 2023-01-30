@@ -63,4 +63,21 @@ class NoteManagement with ChangeNotifier {
 
     await docRef.delete();
   }
+
+  /// It takes a note object, gets the document reference of the note, updates the note, and then
+  /// updates the local list of notes
+  ///
+  /// Args:
+  ///   note (Note): The note object that you want to update.
+  Future<void> updateNote(Note note) async {
+    final docRef = _db.collection("notes").doc(note.noteId).withConverter(
+          fromFirestore: Note.fromFirestore,
+          toFirestore: (Note note, _) => note.toFirestore(),
+        );
+
+    await docRef.update(note.toMap());
+    final existNote = _notes.indexWhere((n) => n.noteId == note.noteId);
+    _notes[existNote] = note;
+    notifyListeners();
+  }
 }

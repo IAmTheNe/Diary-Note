@@ -66,6 +66,12 @@ class AllNotesTab extends StatelessWidget {
                     child: FadeInAnimation(
                       curve: Curves.easeInCubic,
                       child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                            CreateNewNoteScreen.routeName,
+                            arguments: note.notes[index],
+                          );
+                        },
                         onLongPress: () =>
                             showContextMenu(context, note.notes[index]),
                         child: NoteCard(

@@ -26,7 +26,7 @@ class Note {
     return <String, dynamic>{
       'userId': userId,
       'title': title,
-      'createdAt': createdAt.millisecondsSinceEpoch,
+      'createdAt': createdAt,
       'content': content,
       'image': image,
     };

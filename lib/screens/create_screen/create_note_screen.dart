@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:note_app/models/people.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/note.dart';
 import '../../providers/note_management.dart';
 import '../../utils/date_time_formatter.dart';
 
@@ -20,13 +21,25 @@ class _CreateNewNoteScreenState extends State<CreateNewNoteScreen> {
   late final TextEditingController _contentController;
   late final DateTime time;
   final _formKey = GlobalKey<FormState>();
+  Note? note;
 
   @override
   void initState() {
     _titleController = TextEditingController();
     _contentController = TextEditingController();
+
     time = DateTime.now();
+
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    note = ModalRoute.of(context)!.settings.arguments as Note?;
+    _titleController.text = note != null ? note!.title! : '';
+    _contentController.text = note != null ? note!.content : '';
+
+    super.didChangeDependencies();
   }
 
   @override
@@ -44,13 +57,25 @@ class _CreateNewNoteScreenState extends State<CreateNewNoteScreen> {
     _formKey.currentState!.save();
     final content = _contentController.text;
     final title = _titleController.text;
-    final Map<String, dynamic> map = {
-      'userId': PeopleSingleton.instance.people!.uid,
-      'createdAt': time,
-      'content': content,
-      'title': title,
-    };
-    context.read<NoteManagement>().createNote(map);
+
+    if (note == null) {
+      final Map<String, dynamic> map = {
+        'userId': PeopleSingleton.instance.people!.uid,
+        'createdAt': time,
+        'content': content,
+        'title': title,
+      };
+      context.read<NoteManagement>().createNote(map);
+    } else {
+      final updateNote = Note(
+        noteId: note!.noteId,
+        userId: note!.userId,
+        title: _titleController.text,
+        createdAt: note!.createdAt,
+        content: _contentController.text,
+      );
+      context.read<NoteManagement>().updateNote(updateNote);
+    }
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Create new note successfully!'),
@@ -98,11 +123,15 @@ class _CreateNewNoteScreenState extends State<CreateNewNoteScreen> {
                 ),
                 textInputAction: TextInputAction.next,
               ),
-              Text(DateTimeFormatter.shortDateTime(time)),
+              Text(
+                DateTimeFormatter.shortDateTime(
+                  note == null ? time : note!.createdAt,
+                ),
+              ),
               const SizedBox(
                 height: 16,
               ),
-              TextField(
+              TextFormField(
                 autofocus: true,
                 controller: _contentController,
                 decoration: const InputDecoration(
